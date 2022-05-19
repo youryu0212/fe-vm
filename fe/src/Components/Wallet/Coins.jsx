@@ -1,13 +1,19 @@
 import { AlertMessage, SetAlertMessage } from "Context/AlertMessageProvider";
 import useInvestment from "Hooks/useInvestment";
 import useWallet from "Hooks/useWallet";
-import { INIT_ALERT_MESSAGE, INVESTMENT_API, INVESTMENT_COUNT_TIME, WALLET_API } from "Helper/constant";
+import {
+  INIT_ALERT_MESSAGE,
+  INVESTMENT_API,
+  INVESTMENT_COUNT_TIME,
+  RANDOM_RANGE_FOR_ID,
+  WALLET_API,
+} from "Helper/constant";
 import { useContext, useEffect } from "react";
 import { CoinBoxContainer, Count, Money, CoinBox, TotalBox } from "./Coins.styled";
 import addMessageList from "Helper/message";
 import useMessageList from "Hooks/useMessageList";
 import useInvestmentTimer from "Hooks/useInvestmentTimer";
-import { fetchData } from "Helper/utils";
+import { fetchData, getRandomNumber } from "Helper/utils";
 
 export default function Coins() {
   const [investment, setInvestment] = useInvestment();
@@ -106,7 +112,10 @@ const handleCoinClick = (props) => {
 };
 
 const createKeyForNoHasId = (coin, cnt) => {
-  return `${coin}+${cnt}}`;
+  return `${coin}+${cnt}+${getRandomNumber(0, RANDOM_RANGE_FOR_ID)}+${getRandomNumber(
+    0,
+    RANDOM_RANGE_FOR_ID
+  )}`;
 };
 
 const reflectNewMessage = (props) => {
