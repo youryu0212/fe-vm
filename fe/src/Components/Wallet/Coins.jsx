@@ -14,6 +14,8 @@ import addMessageList from "Helper/message";
 import useMessageList from "Hooks/useMessageList";
 import useInvestmentTimer from "Hooks/useInvestmentTimer";
 import { fetchData, getRandomNumber } from "Helper/utils";
+import { InvestmentTimerContext } from "Context/InvestmentTimerProvider";
+import { OrderInProgressContext } from "Context/OrderInProgressProvider";
 
 export default function Coins() {
   const [investment, setInvestment] = useInvestment();
@@ -21,6 +23,8 @@ export default function Coins() {
   const setAlertMessage = useContext(SetAlertMessage);
   const alertMessage = useContext(AlertMessage);
   const [messageList, setMessageList] = useMessageList([]);
+  const investmentTimer = useContext(InvestmentTimerContext);
+  const orderInProgress = useContext(OrderInProgressContext);
   const resetInvestment = useInvestmentTimer();
   const coinBoxsProps = { walletMoney, setWalletMoney, investment, setInvestment, setAlertMessage };
 
@@ -29,7 +33,7 @@ export default function Coins() {
   useEffect(() => {
     const reflectNewMessageProps = { alertMessage, setMessageList, messageList, setAlertMessage };
     reflectNewMessage(reflectNewMessageProps);
-    resetInvestment(INVESTMENT_COUNT_TIME);
+    orderInProgress ? clearTimeout(investmentTimer) : resetInvestment(INVESTMENT_COUNT_TIME);
   }, [alertMessage]);
 
   return <CoinBoxContainer>{coinBoxs}</CoinBoxContainer>;
